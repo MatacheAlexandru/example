@@ -13,7 +13,9 @@ function App() {
         <Router>
           <Routes>
             <Route path="/" element={<Login />} />
-            <Route path="/signup" element={<Register />} />
+            <Route path="/login" element={<Login />} />{" "}
+            {/* Adaugă această linie */}
+            <Route path="/register" element={<Register />} />
             <Route path="/forgot" element={<ForgotPassword />} />
             <Route path="/dashboard/*" element={<Dashboard />} />
           </Routes>

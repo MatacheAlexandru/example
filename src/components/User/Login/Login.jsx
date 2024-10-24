@@ -1,10 +1,21 @@
 import React, { useState } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import styles from "./Login.module.css";
 import Logo from "../../../../public/Logo.svg";
 
-function InputField({ type, placeholder, value, onChange, label, id }) {
+function InputField({
+  type,
+  placeholder,
+  value,
+  onChange,
+  onBlur,
+  label,
+  id,
+  name,
+}) {
   return (
     <div className={styles.inputContainer}>
       <div className={styles.inputWrapper}>
@@ -14,7 +25,9 @@ function InputField({ type, placeholder, value, onChange, label, id }) {
           id={id}
           value={value}
           onChange={onChange}
+          onBlur={onBlur}
           className={styles.customInput}
+          name={name}
         />
         <label htmlFor={id} className={styles.customLabel}>
           {label}
@@ -29,29 +42,51 @@ InputField.propTypes = {
   placeholder: PropTypes.string,
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
+  onBlur: PropTypes.func.isRequired,
   label: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
 };
 
 function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-
   const navigate = useNavigate();
 
-  const localUser = "admin@example";
-  const localPassword = "123456";
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: Yup.object({
+      email: Yup.string()
+        .email("Invalid email address")
+        .required("Email is required"),
+      password: Yup.string().required("Password is required"),
+    }),
+    onSubmit: (values) => {
+      try {
+        // Obține utilizatorii din Local Storage
+        const users = JSON.parse(localStorage.getItem("users")) || [];
+        const user = users.find(
+          (user) =>
+            user.email === values.email && user.password === values.password
+        );
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-
-    if (email === localUser && password === localPassword) {
-      navigate("/dashboard");
-    } else {
-      setError("Invalid username or password");
-    }
-  };
+        if (user) {
+          // Autentificare cu succes
+          localStorage.setItem(
+            "authToken",
+            JSON.stringify({ email: user.email })
+          );
+          navigate("/dashboard");
+        } else {
+          setError("Invalid username or password");
+        }
+      } catch (error) {
+        setError("Something went wrong. Please try again.");
+      }
+    },
+  });
 
   return (
     <section className={styles.customBackground}>
@@ -60,32 +95,39 @@ function Login() {
           <img src={Logo} alt="Logo" className={styles.logoImage} />
         </div>
 
-        <form onSubmit={handleLogin}>
-          <div>
-            <div className={styles.inputFieldSize}>
-              <InputField
-                type="email"
-                placeholder="Email address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                label="Email address"
-                id="form1"
-              />
-            </div>
-
-            <div className={styles.inputFieldSize}>
-              <InputField
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                label="Password"
-                id="form2"
-              />
-            </div>
+        <form onSubmit={formik.handleSubmit}>
+          <div className={styles.inputFieldSize}>
+            <InputField
+              type="email"
+              placeholder="Email address"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              label="Email address"
+              id="form1"
+              name="email"
+            />
+            {formik.touched.email && formik.errors.email && (
+              <div className={styles.error}>{formik.errors.email}</div>
+            )}
           </div>
 
-          {/* Afișează eroarea în caz de autentificare greșită */}
+          <div className={styles.inputFieldSize}>
+            <InputField
+              type="password"
+              placeholder="Password"
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              label="Password"
+              id="form2"
+              name="password"
+            />
+            {formik.touched.password && formik.errors.password && (
+              <div className={styles.error}>{formik.errors.password}</div>
+            )}
+          </div>
+
           {error && <p className={styles.error}>{error}</p>}
 
           <div>
@@ -108,7 +150,7 @@ function Login() {
         <div className="text-center">
           <p className={styles.notAMemberText}>
             Not a member?{" "}
-            <Link to="/signup" className={styles.registerLink}>
+            <Link to="/register" className={styles.registerLink}>
               Register
             </Link>
           </p>

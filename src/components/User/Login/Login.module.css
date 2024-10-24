@@ -2,7 +2,6 @@
 .customBackground {
   background-image: url("/BackgroundLogin.png");
   background-size: cover;
-
   background-repeat: no-repeat;
   width: 100%;
   min-height: 100vh;
@@ -11,10 +10,12 @@
   align-items: center;
 }
 
+/* ------------------CONTAINER------------------ */
 .containerLogin {
   margin-top: 10%;
+  width: 25rem;
   background-color: rgba(255, 255, 255, 0.2);
-  padding: 8rem;
+  padding: 4rem 5rem;
   border-radius: 30px;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -29,37 +30,20 @@
   margin-bottom: 2rem;
 }
 
-.loginTitle {
-  text-align: center;
-  margin-bottom: 3rem;
-  margin-top: 5rem;
-}
-
 .logoImage {
-  width: 150px;
+  width: 350px;
   height: auto;
   margin-bottom: 20px;
 }
 
-/* ------------------ERROR MESSAGE------------------ */
-.errorMessage {
-  color: red;
-  text-align: center;
-}
-
-/* ------------------INPUT CONTAINER------------------ */
-.inputContainer {
-  width: 100%;
-}
-
 /* ------------------INPUT FIELD------------------ */
+.inputContainer {
+  width: 94%;
+  position: relative;
+}
+
 .inputWrapper {
   position: relative;
-  margin-bottom: 1.5rem;
-}
-
-.inputFieldSize {
-  width: 100%;
   margin-bottom: 1.5rem;
 }
 
@@ -67,22 +51,22 @@
   width: 100%;
   padding: 10px;
   font-size: 16px;
-  border: 1px solid rgb(204, 211, 212);
+  border: 1px solid rgb(229, 232, 233);
   border-radius: 4px;
   background-color: transparent;
   color: white;
   transition: all 0.3s ease;
-  -webkit-appearance: none;
   appearance: none;
+  margin-bottom: 2rem;
 }
 
 .customLabel {
   position: absolute;
-  top: 50%;
+  top: 28%;
   left: 10px;
   transform: translateY(-50%);
-  font-size: 16px;
-  color: rgb(177, 177, 177);
+  font-size: 18px;
+  color: rgba(177, 177, 177, 0);
   pointer-events: none;
   transition: all 0.3s ease;
 }
@@ -92,7 +76,7 @@
   border: none;
   outline: none;
   border: 2px solid rgb(255, 255, 255);
-  background-color: rgba(106, 106, 107, 0.342);
+  background-color: rgba(248, 248, 248, 0.342);
 }
 
 .customInput:focus + .customLabel,
@@ -103,29 +87,33 @@
   color: white;
 }
 
-.customInput::placeholder {
-  color: transparent;
+/* ------------------ERROR STYLES------------------ */
+.errorMessage {
+  color: red;
+  text-align: right;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  position: absolute;
+  top: -22px; /* pentru a poziționa deasupra input-ului */
+  right: 0;
 }
 
-.passwordToggleIcon {
-  cursor: "pointer";
-  position: "absolute";
-  right: "10px";
-  top: "50%";
-  transform: "translateY(-50%)";
-  color: #cecdcd;
+.inputError {
+  border-color: red;
 }
 
-/* ------------------CHECKBOX------------------ */
-.boxCheck {
+/* ------------------CHECKBOX AND LINKS------------------ */
+.formOptions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.boxCheck label {
   color: white;
 }
-:global(.form-check-label) {
-  color: #008cff !important;
-  font-weight: 600;
-}
 
-/* ------------------FORGOT PASSWORD LINK------------------ */
 .darkBlueLink {
   color: #008cff;
   font-weight: 600;
@@ -166,7 +154,7 @@
   cursor: not-allowed;
 }
 
-/* ------------------NOT A MEMBER TEXT------------------ */
+/* ------------------REGISTER LINK------------------ */
 .notAMemberText {
   color: rgb(255, 255, 255);
   font-size: 1rem;
@@ -176,7 +164,6 @@
 .registerLink {
   color: #008cff;
   font-weight: 600;
-  font-weight: bold;
   text-decoration: underline;
   transition: color 0.3s ease, transform 0.3s ease;
   display: inline-block;

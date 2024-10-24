@@ -15,9 +15,12 @@ function InputField({
   label,
   id,
   name,
+  error,
 }) {
   return (
     <div className={styles.inputContainer}>
+      {error && <div className={styles.errorMessage}>{error}</div>}{" "}
+      {/* Mesajul de eroare deasupra */}
       <div className={styles.inputWrapper}>
         <input
           type={type}
@@ -26,7 +29,7 @@ function InputField({
           value={value}
           onChange={onChange}
           onBlur={onBlur}
-          className={styles.customInput}
+          className={`${styles.customInput} ${error ? styles.inputError : ""}`}
           name={name}
         />
         <label htmlFor={id} className={styles.customLabel}>
@@ -46,6 +49,7 @@ InputField.propTypes = {
   label: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  error: PropTypes.string,
 };
 
 function Login() {
@@ -104,10 +108,8 @@ function Login() {
               label="Email address"
               id="form1"
               name="email"
+              error={formik.touched.email && formik.errors.email}
             />
-            {formik.touched.email && formik.errors.email && (
-              <div className={styles.error}>{formik.errors.email}</div>
-            )}
           </div>
 
           <div className={styles.inputFieldSize}>
@@ -120,15 +122,13 @@ function Login() {
               label="Password"
               id="form2"
               name="password"
+              error={formik.touched.password && formik.errors.password}
             />
-            {formik.touched.password && formik.errors.password && (
-              <div className={styles.error}>{formik.errors.password}</div>
-            )}
           </div>
 
-          {error && <p className={styles.error}>{error}</p>}
+          {error && <p className={styles.errorMessage}>{error}</p>}
 
-          <div>
+          <div className={styles.formOptions}>
             <div className={styles.boxCheck}>
               <input type="checkbox" id="flexCheckDefault" />
               <label htmlFor="flexCheckDefault">Remember me</label>

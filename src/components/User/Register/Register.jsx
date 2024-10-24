@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
-import PropTypes from "prop-types";
 import styles from "./Register.module.css";
 import Logo from "../../../../public/Logo.svg";
 
@@ -32,7 +31,6 @@ function Register() {
     }),
     onSubmit: (values) => {
       try {
-        // Verifică dacă emailul este deja înregistrat
         const existingUsers = JSON.parse(localStorage.getItem("users")) || [];
         const userExists = existingUsers.some(
           (user) => user.email === values.email
@@ -41,7 +39,6 @@ function Register() {
         if (userExists) {
           setError("Email is already registered");
         } else {
-          // Salvează utilizatorul în Local Storage
           const newUser = {
             name: values.name,
             email: values.email,
@@ -51,7 +48,7 @@ function Register() {
             "users",
             JSON.stringify([...existingUsers, newUser])
           );
-          navigate("/login"); // Navighează către pagina de Login după înregistrare
+          navigate("/login");
         }
       } catch (error) {
         setError("Something went wrong. Please try again.");
@@ -174,9 +171,5 @@ function Register() {
     </div>
   );
 }
-
-Register.propTypes = {
-  startAnimation: PropTypes.func,
-};
 
 export default Register;

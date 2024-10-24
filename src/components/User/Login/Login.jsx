@@ -65,7 +65,6 @@ function Login() {
     }),
     onSubmit: (values) => {
       try {
-        // Obține utilizatorii din Local Storage
         const users = JSON.parse(localStorage.getItem("users")) || [];
         const user = users.find(
           (user) =>
@@ -73,7 +72,6 @@ function Login() {
         );
 
         if (user) {
-          // Autentificare cu succes
           localStorage.setItem(
             "authToken",
             JSON.stringify({ email: user.email })
@@ -159,9 +157,5 @@ function Login() {
     </section>
   );
 }
-
-Login.propTypes = {
-  startAnimation: PropTypes.func,
-};
 
 export default Login;
